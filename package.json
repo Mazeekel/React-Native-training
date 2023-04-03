@@ -1,5 +1,5 @@
 {
-  "name": "calculator",
+  "name": "mines",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -13,7 +13,7 @@
   "devDependencies": {
     "babel-jest": "23.4.2",
     "babel-preset-react-native": "^5",
-    "jest": "23.4.2",
+    "jest": "23.5.0",
     "react-test-renderer": "16.4.1"
   },
   "jest": {
