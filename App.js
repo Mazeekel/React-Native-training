@@ -11,11 +11,11 @@ import Routes from './src/routes/index';
 
 export default function App() {
  return (
-  <NavigationContainer>
-     <AuthProvider>
+   <NavigationContainer>
+    <AuthProvider>
       <StatusBar backgroundColor="#131313" barStyle="light-content"/>
       <Routes/>
-     </AuthProvider>
-  </NavigationContainer>
+    </AuthProvider>
+    </NavigationContainer>
   );
 }
