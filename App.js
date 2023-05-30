@@ -1,21 +1,87 @@
-import 'react-native-gesture-handler';
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { View, StatusBar } from 'react-native';
+import React, { useState } from 'react';
+import {View, Text, StatusBar, StyleSheet, TouchableOpacity, Modal,} from 'react-native';
+import { RNCamera } from 'react-native-camera';
 
-console.disableYellowBox=true;
+export default function App(){
+  const [type, setType] = useState(RNCamera.Constants.Type.back);
+  const [open, setOpen] = useState(false);
 
-import AuthProvider from './src/contexts/auth';
+  function takePicture(){
+    setOpen(true);
+  }
 
-import Routes from './src/routes/index';
+  return(
+    <View style={styles.container}>
+      <StatusBar hidden={true} />
+      
+      <RNCamera
+        style={styles.preview}
+        type={type}
+        flashMode={RNCamera.Constants.FlashMode.auto}
+        androidCameraPermissionOptions={{
+          title: 'Permissao para usar a camera',
+          message: 'Nós precisamos usar a sua camera',
+          buttonPositive: 'Ok',
+          buttonNegative: 'Cancelar'
+        }}
+      >
+        { ({ camera, status, recordAndroidPermissionStatus }) => {
+          if(status !== 'READY') return <View/>;
+          return(
+            <View 
+            style={{marginBottom: 35, flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between'}}
+            >
+              <TouchableOpacity
+                onPress={()=> takePicture() }
+                style={styles.capture}
+              >
+                <Text>Tirar foto</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={()=> {}}
+                style={styles.capture}
+              >
+                <Text>Album</Text>
+              </TouchableOpacity>
+            </View>
+          );
+        }}
+      </RNCamera>
 
-export default function App() {
- return (
-   <NavigationContainer>
-    <AuthProvider>
-      <StatusBar backgroundColor="#131313" barStyle="light-content"/>
-      <Routes/>
-    </AuthProvider>
-    </NavigationContainer>
+
+      <Modal animationType="slide" transparent={false} visible={open}>
+        <View style={{flex:1, justifyContent: 'center', alignItems: 'center', margin: 20}} >
+          <TouchableOpacity 
+          style={{margin: 10}}
+          onPress={() => setOpen(false)}
+          >
+            <Text style={{ fontSize: 24}}>Fechar</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+
+
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container:{
+    flex:1,
+    justifyContent: 'center'
+  },
+  preview:{
+    flex:1,
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+  },
+  capture:{
+    flex: 0,
+    backgroundColor: '#FFF',
+    borderRadius: 5,
+    padding: 15,
+    paddingHorizontal: 20,
+    alignSelf: 'center',
+    margin: 20,
+  }
+});
